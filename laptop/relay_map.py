@@ -39,7 +39,8 @@ def main():
     }
     plan_publisher = node.create_publisher(NavPath, '/plan', latched)
     broadcaster = TransformBroadcaster(node)
-    source = Path(__file__).with_name('stream_map.py').read_text()
+    stream_path = Path(__file__).resolve().parents[1] / 'jetson/navigation/stream_map.py'
+    source = stream_path.read_text()
     command = [
         'ssh', '-i', os.path.expanduser(os.environ.get('JETSON_SSH_KEY', '~/.ssh/jetson_codex_ed25519')),
         '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=8', '-o', 'ServerAliveInterval=5',

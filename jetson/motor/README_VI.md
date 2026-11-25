@@ -6,7 +6,7 @@ ESP32 không chạy ROS 2 hoặc micro-ROS. Firmware giải mã PWM từ node c�
 Không encoder: điều khiển vòng hở; không có tốc độ đo hoặc wheel odometry.
 
 ## 1. Nạp ESP32
-Mở firmware/esp32_mecanum_serial/esp32_mecanum_serial.ino bằng Arduino IDE.
+Mở [esp32_mecanum_serial.ino](../../esp32/esp32_mecanum_serial/esp32_mecanum_serial.ino) bằng Arduino IDE.
 Chọn ESP32 Dev Module, Arduino-ESP32 core 3.x rồi chọn đúng cổng và Upload.
 Code cố ý chặn core khác 3.x vì API LEDC có khác biệt theo phiên bản.
 Kê cả bốn bánh trước khi thử. Khởi động không tự chạy.
