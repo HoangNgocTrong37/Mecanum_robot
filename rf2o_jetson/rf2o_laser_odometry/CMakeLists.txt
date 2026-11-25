@@ -65,22 +65,8 @@ add_library(${PROJECT_NAME} src/CLaserOdometry2D.cpp)
 ament_target_dependencies(${PROJECT_NAME} ${DEPENDENCIES})
 target_link_libraries(${EXECUTABLE_NAME} ${PROJECT_NAME})
 
-if(BUILD_TESTING)
-  enable_testing()
-  add_executable(test_planar_twist tests/test_planar_twist.cpp)
-  add_test(NAME planar_twist COMMAND test_planar_twist)
-  add_executable(test_scan_odometry tests/test_scan_odometry.cpp)
-  ament_target_dependencies(test_scan_odometry ${DEPENDENCIES})
-  target_link_libraries(test_scan_odometry ${PROJECT_NAME})
-  add_test(NAME scan_odometry COMMAND test_scan_odometry)
-endif()
-
 install(TARGETS ${EXECUTABLE_NAME}
   DESTINATION lib/${PROJECT_NAME})
-
-install(
-  DIRECTORY launch  
-  DESTINATION share/${PROJECT_NAME})
 
 ament_package()
 

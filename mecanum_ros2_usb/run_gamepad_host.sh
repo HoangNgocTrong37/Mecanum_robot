@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-esp32_path=/dev/serial/by-path/platform-70090000.xusb-usb-0:3.2:1.0-port0
+esp32_path="${ESP32_DEVICE:-/dev/serial/by-path/platform-70090000.xusb-usb-0:3.2:1.0-port0}"
 device="$(readlink -e -- "$esp32_path")"
 [[ -c "$device" ]]
 terminal=(-i)
@@ -10,7 +10,7 @@ if [[ ${1:-} == --keyboard ]]; then
     terminal=(-it)
     program=keyboard_drive.py
 fi
-exec docker run --rm "${terminal[@]}" --name mecanum-gamepad --network host --group-add 20 \
+exec docker run --rm "${terminal[@]}" --name mecanum-gamepad --network host --group-add "$(stat -c %g -- "$device")" \
     --device "$device:/dev/ttyUSB0" -v "$HOME/mecanum_ros2_usb:/app:ro" -w /app \
     -e FASTRTPS_DEFAULT_PROFILES_FILE=/app/fastdds_udp.xml \
     -e PYTHONPATH=/app/.gamepad_deps jetson-ros2:humble \

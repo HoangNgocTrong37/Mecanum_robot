@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-lidar_path=/dev/serial/by-path/platform-70090000.xusb-usb-0:2:1.0-port0
+lidar_path="${LIDAR_DEVICE:-/dev/serial/by-path/platform-70090000.xusb-usb-0:2:1.0-port0}"
 device=$(readlink -e "$lidar_path")
 test -c "$device"
 if [[ "$(docker inspect -f '{{(index .HostConfig.Devices 0).PathOnHost}}' lidar-ros)" != "$device" ]]; then

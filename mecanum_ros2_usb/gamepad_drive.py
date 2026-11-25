@@ -44,9 +44,9 @@ def main():
         armed = False
         last = None
         command = [
-            'ssh', '-i', os.path.expanduser('~/.ssh/jetson_codex_ed25519'),
+            'ssh', '-i', os.path.expanduser(os.environ.get('JETSON_SSH_KEY', '~/.ssh/jetson_codex_ed25519')),
             '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=6',
-            'trong@192.168.1.112',
+            os.environ.get('JETSON_SSH_HOST', 'trong@192.168.1.112'),
             'bash ~/mecanum_ros2_usb/run_gamepad_host.sh' +
             (' --follow' if args.follow else ' --drive' if args.drive else ''),
         ]

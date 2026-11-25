@@ -83,7 +83,7 @@ Kiểm tra chiều con lăn thực tế trước khi áp dụng ma trận: test 
 Dừng node cũ bằng Ctrl+C. Kê xe khỏi mặt đất. Ví dụ lệnh SAU CHỈ DÙNG THAM SỐ
 GIẢ ĐỊNH: r=0.05m, lx=0.15m, ly=0.13m, gain=40 PWM/(rad/s).
 Thay bằng kích thước đo được và hệ số đã thử trên xe; không lấy 319RPM làm tốc độ
-thực của bánh khi chịu tải. Nếu chưa biết gain, bắt đầu PWM thấp bằng bộ test trước.
+thực của bánh khi chịu tải. Nếu chưa biết gain, bắt đầu với giới hạn PWM thấp khi kê bánh.
 
     python3 mecanum_bridge.py --ros-args \
       -p port:=/dev/ttyUSB0 \
@@ -121,15 +121,6 @@ một lần sẽ bị ghi đè. Nút cắt VM là cách dừng vật lý khi th�
   Firmware luôn giới hạn |PWM|<=160 trên thang255.
 - Lệnh USB: P,seq,FL,FR,RL,RR\n; truy vấn ?\n.
 - Phản hồi: T,ms,seq,FL_applied,FR_applied,RL_applied,RR_applied,timedOut\n.
-
-## 7. Kiểm chứng đã thực hiện
-- 6 unit tests Python: các hướng cơ sở, dấu, co tỷ lệ khi bão hòa, đầu vào lỗi,
-  timeout và phân tích phản hồi. Chạy: python3 -m unittest discover -s tests -v.
-- Kiểm tra cú pháp hai script Python.
-- Firmware được kiểm tra bằng C++ host stub: ánh xạ chân, khởi động dừng,
-  timeout, đảo chiều, lệnh lỗi/quá dài và CRLF.
-- Chưa biên dịch bằng toolchain ESP32; chưa có môi trường ROS2/rclpy hoặc robot
-  thật để kiểm thử toàn tuyến. Cần xác minh trên Jetson và phần cứng trước sử dụng.
 
 Nguồn thiết kế:
 https://github.com/ros2/common_interfaces/blob/humble/geometry_msgs/msg/Twist.msg

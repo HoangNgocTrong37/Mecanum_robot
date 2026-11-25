@@ -1,5 +1,6 @@
 """Relay the Jetson map and pose to a local RViz ROS domain."""
 import json
+import os
 from pathlib import Path
 import shlex
 import signal
@@ -40,9 +41,9 @@ def main():
     broadcaster = TransformBroadcaster(node)
     source = Path(__file__).with_name('stream_map.py').read_text()
     command = [
-        'ssh', '-i', str(Path.home() / '.ssh/jetson_codex_ed25519'),
+        'ssh', '-i', os.path.expanduser(os.environ.get('JETSON_SSH_KEY', '~/.ssh/jetson_codex_ed25519')),
         '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=8', '-o', 'ServerAliveInterval=5',
-        '-o', 'ServerAliveCountMax=2', 'trong@192.168.1.112',
+        '-o', 'ServerAliveCountMax=2', os.environ.get('JETSON_SSH_HOST', 'trong@192.168.1.112'),
         'docker exec -i -e FASTRTPS_DEFAULT_PROFILES_FILE=/results/fastdds_udp.xml lidar-ros '
         "bash -c 'source /opt/ros/humble/setup.bash && exec python3 -u -c \"$1\"' stream "
         + shlex.quote(source),
