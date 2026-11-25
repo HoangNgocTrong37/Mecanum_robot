@@ -1,0 +1,62 @@
+map_server:
+  ros__parameters:
+    yaml_filename: /results/phong_20261125_142535.yaml
+
+amcl:
+  ros__parameters:
+    base_frame_id: base_link
+    odom_frame_id: odom
+    global_frame_id: map
+    scan_topic: /scan
+    robot_model_type: nav2_amcl::OmniMotionModel
+    set_initial_pose: true
+    initial_pose: {x: 0.0, y: 0.0, z: 0.0, yaw: 0.0}
+    min_particles: 300
+    max_particles: 1000
+    update_min_d: 0.05
+    update_min_a: 0.10
+    transform_tolerance: 0.4
+
+planner_server:
+  ros__parameters:
+    expected_planner_frequency: 1.0
+    planner_plugins: [GridBased]
+    GridBased:
+      plugin: nav2_navfn_planner/NavfnPlanner
+      tolerance: 0.10
+      use_astar: true
+      allow_unknown: false
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      global_frame: map
+      robot_base_frame: base_link
+      resolution: 0.05
+      track_unknown_space: true
+      transform_tolerance: 0.4
+      update_frequency: 3.0
+      publish_frequency: 1.0
+      # Measured enclosure relative to an assumed centered base_link.
+      footprint: '[[0.14,0.16],[0.14,-0.16],[-0.14,-0.16],[-0.14,0.16]]'
+      footprint_padding: 0.02
+      plugins: [static_layer, obstacle_layer, inflation_layer]
+      static_layer:
+        plugin: nav2_costmap_2d::StaticLayer
+        map_subscribe_transient_local: true
+      obstacle_layer:
+        plugin: nav2_costmap_2d::ObstacleLayer
+        observation_sources: scan
+        scan:
+          topic: /scan
+          data_type: LaserScan
+          marking: true
+          clearing: true
+          obstacle_min_range: 0.16
+          obstacle_max_range: 3.0
+          raytrace_min_range: 0.16
+          raytrace_max_range: 3.5
+      inflation_layer:
+        plugin: nav2_costmap_2d::InflationLayer
+        inflation_radius: 0.30
+        cost_scaling_factor: 4.0
